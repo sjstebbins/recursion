@@ -7,20 +7,19 @@
 var getElementsByClassName = function(className){
   // your code here
   // console.log(this.document);
+  var results = [];
   var nodeScan = function(node, name){
-    console.log(node);
-    if (node.childElementCount === 0){
-      if (node.classList.contains(name)){
+    if (node.classList.contains(name)){
         results.push(node);
-      }
-    } else {
-      for (var child in node.childNodes) {
-        nodeScan(child,className);
+    }
+    if (node.children.length > 0){
+      for (var i = 0; i<node.children.length;i++) {
+        results.push(nodeScan(child,className));
       }
     }
   };
-  var results = [];
   nodeScan(this.document,className);
+  console.log(results);
   return results;
 };
 

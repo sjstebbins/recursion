@@ -33,15 +33,19 @@ var stringifyJSON = function(obj) {
       var needsComma = false;
       out += "{";
       for (var i in node){
-        if (node[i] == undefined || node !== null && node.constructor === Function){}
-        if (needsComma){
-          out += ",";
+    //look at the value, see if it's something unstringifiable
+        if ( node[i] != undefined ){
+      //if it is, return an empty object
+      //if it's not, do the thing with the colon and stringify the right side
+          if (needsComma){
+              out += ",";
+          }
+          needsComma = true;
+          out += '"' + i + '":';
+          stringify(node[i]);
+        } else {
+          out += "}";
         }
-        needsComma = true;
-        out += '"' + i + '":';
-        stringify(node[i]);
-      }
-      out += "}";
     } else if (node.constructor === Function){
     } else if (node == undefined){
     }
