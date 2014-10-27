@@ -4,53 +4,72 @@
 // but you don't so you're going to write it from scratch:
 var stringifyJSON = function(obj) {
   // your code goes here
-  var out = "";
+
   var stringify = function(node){
-    if (node == null){
+    if (node === null){
       out += "null";
-      return;
-    } else if (node.constructor === Number){
+    }
+  else if (node.constructor === Number){
       out += node.toString();
-    } else if (node.constructor === String){
+    }
+  else if (node.constructor === String){
       out += '"' + node + '"';
-    } else if (node.constructor === Boolean){
-      console.log(node);
+    }
+  else if (node.constructor === Boolean){
       if (node === true){
         out += "true";
       } else {
         out += "false";
       }
-    } else if (node.constructor === Array){
+    }
+  else if (node.constructor === Array){
       out += "[";
       for (var i = 0; i < node.length;i++){
+    if ( node[i] === undefined )
+      continue;
         stringify(node[i]);
         if (i < node.length -1){
           out += ",";
         }
       }
       out += "]";
-    } else if (node.constructor === Object){
+    }
+  else if (node.constructor === Object){
+
       var needsComma = false;
       out += "{";
-      for (var i in node){
-    //look at the value, see if it's something unstringifiable
-        if ( node[i] != undefined ){
-      //if it is, return an empty object
-      //if it's not, do the thing with the colon and stringify the right side
-          if (needsComma){
-              out += ",";
-          }
-          needsComma = true;
-          out += '"' + i + '":';
-          stringify(node[i]);
-        } else {
-          out += "}";
+    for (var i in node) {
+      if (node[i] !== null){
+        if ( node[i] === undefined || node[i].constructor === Function )
+          continue;
+
+            if (needsComma){
+                out += ",";
+            }
+            needsComma = true;
+            out += '"' + i + '":';
+            stringify(node[i]);
         }
-    } else if (node.constructor === Function){
-    } else if (node == undefined){
+      else {
+         if (needsComma){
+                out += ",";
+            }
+        out += '"' + i + '":';
+        stringify(node[i]);
+      }
+    }
+    out += "}";
+  }
+  else if (node.constructor === Function){
+    }
+  else if (node === undefined){
     }
   }
+
+  var out = "";
   stringify(obj);
   console.log(out);
   return out;
 };
+
+
